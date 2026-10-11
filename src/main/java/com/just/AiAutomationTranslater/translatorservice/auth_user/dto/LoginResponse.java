@@ -8,8 +8,10 @@ import java.util.List;
 public class LoginResponse {
 
     private String token;
+    private String refreshToken;
     private String tokenType = "Bearer";
     private long expiresIn;
+    private long refreshExpiresIn;
     private UserDTO user;
     private List<String> roles;
 }

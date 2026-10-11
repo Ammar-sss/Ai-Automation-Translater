@@ -40,7 +40,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
-                Claims claims = jwtService.parseClaims(token);              // token is read once
+                Claims claims = jwtService.parseAccessClaims(token);              // token is read once
                 String email = claims.getSubject();
                 if (!StringUtils.hasText(email)) {
                     throw new BadCredentialsException("Token has no subject");

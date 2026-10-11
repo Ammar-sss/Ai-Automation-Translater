@@ -1,9 +1,13 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: postgres:17
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_DB: translatorservice_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234sql
     ports:
-      - '5432'
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
