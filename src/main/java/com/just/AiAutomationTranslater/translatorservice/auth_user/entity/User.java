@@ -1,13 +1,16 @@
 package com.just.AiAutomationTranslater.translatorservice.auth_user.entity;
 
 import com.just.AiAutomationTranslater.translatorservice.role.entity.Role;
+import com.just.AiAutomationTranslater.translatorservice.vocabulary.entity.Term;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -65,4 +68,13 @@ public class User {
     )
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @Builder.Default
+    private List<Term> terms = new ArrayList<>();
+
+    public void addTerm(Term term) {
+        terms.add(term);
+        term.setUser(this);
+    }
 }
