@@ -9,7 +9,7 @@ import lombok.Data;
 public class AiRequest {
 
     @NotBlank(message = "term is required")
-    private String term;
+    private String termWord;
 
     @NotNull(message = "Language target is required")
     private LanguageTarget targetLang;

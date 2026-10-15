@@ -4,6 +4,7 @@ import com.just.AiAutomationTranslater.translatorservice.res.Response;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiResponse;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.TranslateRequest;
 import com.just.AiAutomationTranslater.translatorservice.translation.service.TranslationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class TranslateController {
     private final TranslationService translationService;
 
     @PostMapping
-    ResponseEntity<Response<AiResponse>> translate(@RequestBody TranslateRequest request){
+    ResponseEntity<Response<AiResponse>> translate(@Valid @RequestBody TranslateRequest request){
         return ResponseEntity.ok(translationService.translate(request));
     }
 }

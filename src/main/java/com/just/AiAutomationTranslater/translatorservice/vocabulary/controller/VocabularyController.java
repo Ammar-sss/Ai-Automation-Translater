@@ -22,7 +22,7 @@ public class VocabularyController {
         return ResponseEntity.ok(vocabularyService.getTermById(id));
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Response<List<TermDTO>>> getAllTerms() {
         return ResponseEntity.ok(vocabularyService.getAllTerms());
     }

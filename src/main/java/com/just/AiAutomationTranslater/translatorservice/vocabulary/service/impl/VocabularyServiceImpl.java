@@ -95,24 +95,7 @@ public class VocabularyServiceImpl implements  VocabularyService {
     @Transactional
     public Term saveTerm(Term term) {
         User user = userService.getCurrentUser();
-
-        Term savedTerm = Term.builder()
-                .wordTerm(term.getWordTerm())
-                .build();
-
-        if (term.getTermDefinitions() != null) {
-            term.getTermDefinitions().forEach(savedTerm::addTermDefinition);
-        }
-
-        if (term.getTermExamples() != null) {
-            term.getTermExamples().forEach(savedTerm::addTermExample);
-        }
-
-        if (term.getExampleDefinitions() != null) {
-            term.getExampleDefinitions().forEach(savedTerm::addExampleDefinition);
-        }
-
-        user.addTerm(savedTerm);
-        return termRepository.save(savedTerm);
+        term.setUser(user);
+        return termRepository.save(term);
     }
 }

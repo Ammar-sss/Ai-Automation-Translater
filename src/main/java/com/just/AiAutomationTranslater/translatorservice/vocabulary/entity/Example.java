@@ -3,7 +3,6 @@ package com.just.AiAutomationTranslater.translatorservice.vocabulary.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Getter
 @Setter
 @Entity

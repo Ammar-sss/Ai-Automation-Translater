@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TermRepository extends JpaRepository<Term,Long> {
+public interface TermRepository extends JpaRepository<Term, Long> {
 
-    @EntityGraph(attributePaths = {"definitions", "examples"})
+    @EntityGraph(attributePaths = {"termDefinitions", "termExamples", "exampleDefinitions"})
     List<Term> findAllByUserId(Long userId);
 
-    Optional<Term> findByIdAndUserId(Long id,Long userId);
+    @EntityGraph(attributePaths = {"termDefinitions", "termExamples", "exampleDefinitions"})
+    Optional<Term> findByIdAndUserId(Long id, Long userId);
+
     Optional<Term> findByWordTermAndUserId(String term, Long userId);
 
     boolean existsByWordTermAndUserId(String wordTerm, Long userId);

@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(
         name = "terms",
-        uniqueConstraints = @UniqueConstraint(name = "uc_user_term", columnNames = {"user_id", "term"})
+        uniqueConstraints = @UniqueConstraint(name = "uc_user_term", columnNames = {"user_id", "word_term"})
 )
 public class Term {
 
@@ -34,11 +34,11 @@ public class Term {
 
     @Builder.Default
     @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Example> termExamples = new ArrayList<>();
+    private Set<Example> termExamples = new HashSet<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExampleDefinition> exampleDefinitions = new ArrayList<>();
+    private Set<ExampleDefinition> exampleDefinitions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -61,7 +61,7 @@ public class Term {
 
     public void removeTermExample(Example e) {
         termExamples.remove(e);
-        e.setTerm(this);
+        e.setTerm(null);
     }
 
     public void addExampleDefinition(ExampleDefinition d) {
