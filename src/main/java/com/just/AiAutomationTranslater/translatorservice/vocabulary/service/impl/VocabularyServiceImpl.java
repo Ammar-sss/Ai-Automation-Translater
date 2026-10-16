@@ -88,7 +88,7 @@ public class VocabularyServiceImpl implements  VocabularyService {
     public Optional<TermDTO> findByNormalizedTerm(String normalizationTerm) {
         User user = userService.getCurrentUser();
 
-        return termRepository.findByWordTermAndUserId(normalizationTerm,user.getId()).map(term -> modelMapper.map(term, TermDTO.class));
+        return termRepository.findByTermWordAndUserId(normalizationTerm,user.getId()).map(term -> modelMapper.map(term, TermDTO.class));
     }
 
     @Override

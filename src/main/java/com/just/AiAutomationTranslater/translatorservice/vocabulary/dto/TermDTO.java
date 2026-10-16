@@ -9,7 +9,7 @@ import java.util.Set;
 public class TermDTO {
 
     private Long id;
-    private String wordTerm;
+    private String termWord;
     private Set<TermDefinitionDTO> termDefinitions = new HashSet<>();
     private Set<ExampleDTO> termExamples = new HashSet<>();
     private Set<ExampleDefinitionDTO> exampleDefinitions = new HashSet<>();

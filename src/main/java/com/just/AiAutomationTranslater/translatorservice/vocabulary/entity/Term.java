@@ -4,9 +4,7 @@ import com.just.AiAutomationTranslater.translatorservice.auth_user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,7 +24,7 @@ public class Term {
     private Long id;
 
     @Column(nullable = false, length = 255)
-    private String wordTerm;
+    private String termWord;
 
     @Builder.Default
     @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)

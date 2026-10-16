@@ -11,6 +11,6 @@ Flutter to spring
 public class TranslateRequest {
 
     @NotBlank(message = "term is required")
-    @Size(max = 100)
+    @Size(min = 1)
     private String termWord;
 }

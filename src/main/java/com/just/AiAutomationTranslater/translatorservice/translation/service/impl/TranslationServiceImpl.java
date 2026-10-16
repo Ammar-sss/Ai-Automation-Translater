@@ -37,7 +37,7 @@ public class TranslationServiceImpl implements TranslationService{
         User user = userService.getCurrentUser();
         String requestedTerm = request.getTermWord().trim().toLowerCase();
 
-        if(termRepository.findByWordTermAndUserId(requestedTerm,user.getId()).isPresent()){
+        if(termRepository.findByTermWordAndUserId(requestedTerm,user.getId()).isPresent()){
             throw new ConflictException("Term already exists");
         }
 
@@ -48,7 +48,7 @@ public class TranslationServiceImpl implements TranslationService{
         AiResponse aiResponse = n8nClient.translate(aiRequest);
 
         Term term = Term.builder()
-                .wordTerm(requestedTerm)
+                .termWord(requestedTerm)
                 .build();
 
         if (aiResponse.getTermDefinitions() != null) {

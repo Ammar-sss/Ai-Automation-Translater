@@ -17,7 +17,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     @EntityGraph(attributePaths = {"termDefinitions", "termExamples", "exampleDefinitions"})
     Optional<Term> findByIdAndUserId(Long id, Long userId);
 
-    Optional<Term> findByWordTermAndUserId(String term, Long userId);
+    Optional<Term> findByTermWordAndUserId(String term, Long userId);
 
-    boolean existsByWordTermAndUserId(String wordTerm, Long userId);
+    boolean existsByTermWordAndUserId(String wordTerm, Long userId);
 }
