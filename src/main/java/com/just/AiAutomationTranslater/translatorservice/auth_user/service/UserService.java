@@ -13,7 +13,7 @@ public interface UserService {
     Response<List<UserDTO>> getAllUsers();
     Response<UserDTO> getUserById(long id);
     Response<UserDTO> getUserByEmail(String email);
-    Response<UserDTO> updateCurrentUser(UserDTO userDTO);
+    Response<UserDTO> updateProfile(UserDTO userDTO);
     Response<Void> deleteUserByID(long id);
     Response<Void> deleteUserByEmail(String email);
     Response<Void> deActivateUserByID(long id);

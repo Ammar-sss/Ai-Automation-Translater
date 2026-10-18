@@ -2,10 +2,15 @@ package com.just.AiAutomationTranslater.translatorservice.vocabulary.service.imp
 
 import com.just.AiAutomationTranslater.translatorservice.auth_user.entity.User;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.service.UserService;
+import com.just.AiAutomationTranslater.translatorservice.exceptions.ConflictException;
 import com.just.AiAutomationTranslater.translatorservice.exceptions.NotFoundException;
 import com.just.AiAutomationTranslater.translatorservice.res.Response;
+import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiResponse;
 import com.just.AiAutomationTranslater.translatorservice.vocabulary.dto.TermDTO;
+import com.just.AiAutomationTranslater.translatorservice.vocabulary.entity.Example;
+import com.just.AiAutomationTranslater.translatorservice.vocabulary.entity.ExampleDefinition;
 import com.just.AiAutomationTranslater.translatorservice.vocabulary.entity.Term;
+import com.just.AiAutomationTranslater.translatorservice.vocabulary.entity.TermDefinition;
 import com.just.AiAutomationTranslater.translatorservice.vocabulary.repository.TermRepository;
 import com.just.AiAutomationTranslater.translatorservice.vocabulary.service.VocabularyService;
 import lombok.RequiredArgsConstructor;
@@ -85,17 +90,66 @@ public class VocabularyServiceImpl implements  VocabularyService {
     }
 
     @Override
+    public Response<TermDTO> findByTermWord(String termWord) {
+        User user = userService.getCurrentUser();
+
+        Term term = termRepository.findByTermWordAndUserId(termWord, user.getId())
+                .orElseThrow(() -> new NotFoundException("Term not found"));
+        TermDTO termDTO = modelMapper.map(term, TermDTO.class);
+
+        return Response.<TermDTO>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Terms retrieved successfully by id")
+                .data(termDTO)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public Response<TermDTO> confirmTermSave(AiResponse aiResponse) {
+        User user = userService.getCurrentUser();
+        if (termRepository.existsByTermWordAndUserId(aiResponse.getTermWord(), user.getId())) {
+            throw new ConflictException("Term already exists");
+        }
+
+        Term term = Term.builder()
+                .termWord(aiResponse.getTermWord())
+                .user(user)
+                .build();
+
+        if (aiResponse.getTermDefinitions() != null) {
+            for (String defi : aiResponse.getTermDefinitions()){
+                TermDefinition termDefinition = new TermDefinition();
+                termDefinition.setWordDefinition(defi);
+                term.addTermDefinition(termDefinition);
+            }
+        }
+
+        if (aiResponse.getExampleSentence() != null) {
+            Example example =  new Example();
+            example.setExampleSentence(aiResponse.getExampleSentence());
+            term.addTermExample(example);
+        }
+
+        if (aiResponse.getExampleDefinition() != null) {
+            ExampleDefinition exampleDefinition = new ExampleDefinition();
+            exampleDefinition.setExampleDefinition(aiResponse.getExampleDefinition());
+            term.addExampleDefinition(exampleDefinition);
+        }
+
+        termRepository.save(term);
+
+        return Response.<TermDTO>builder()
+                .statusCode(HttpStatus.OK.value()).
+                message("Term saved successfully")
+                .build();
+    }
+
+    @Override
     public Optional<TermDTO> findByNormalizedTerm(String normalizationTerm) {
         User user = userService.getCurrentUser();
 
         return termRepository.findByTermWordAndUserId(normalizationTerm,user.getId()).map(term -> modelMapper.map(term, TermDTO.class));
     }
 
-    @Override
-    @Transactional
-    public Term saveTerm(Term term) {
-        User user = userService.getCurrentUser();
-        term.setUser(user);
-        return termRepository.save(term);
-    }
 }

@@ -8,9 +8,7 @@ import com.just.AiAutomationTranslater.translatorservice.exceptions.ConflictExce
 import com.just.AiAutomationTranslater.translatorservice.exceptions.NotFoundException;
 import com.just.AiAutomationTranslater.translatorservice.exceptions.UnauthorizedAccessException;
 import com.just.AiAutomationTranslater.translatorservice.res.Response;
-import com.just.AiAutomationTranslater.translatorservice.role.repository.RoleRepository;
 import com.just.AiAutomationTranslater.translatorservice.security.AuthUser;
-import com.just.AiAutomationTranslater.translatorservice.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -28,8 +26,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final JwtService jwtService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -98,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Response<UserDTO> updateCurrentUser(UserDTO userDTO) {
+    public Response<UserDTO> updateProfile(UserDTO userDTO) {
         User user = getCurrentUser();
 
         if(!userDTO.getUsername().isBlank()) {
