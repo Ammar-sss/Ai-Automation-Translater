@@ -28,7 +28,10 @@ jobs:
       DB_URL: jdbc:postgresql://localhost:5432/translatorservice_db
       DB_USERNAME: postgres
       DB_PASSWORD: ci_password
-      JWT_SECRET: ci_only_secret_key_that_is_long_enough_for_hs256_signing
+      JWT_SECRET: "wvsgdnx4sUqPA16bYudpkW05qMIb8GSOy3cK/PfF6W0qGwIPFNH5jFkut+BTvAtG"
+      ADMIN_USERNAME: ci_admin
+      ADMIN_EMAIL: ci_admin@example.com
+      ADMIN_PASSWORD: ci_admin_password
       N8N_SECRET: ci_n8n_secret
 
     steps:
