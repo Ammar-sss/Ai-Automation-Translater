@@ -1,0 +1,27 @@
+#once a week, Dependabot checks four things for newer versions:
+#your Maven libraries (pom.xml), the base images in your Dockerfile, the images in your compose files (like postgres:17),
+#and the actions in your workflows. When it finds one, it opens a PR.
+#Your CI then runs on that PR, so you can see whether the update breaks anything before you merge.
+
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
