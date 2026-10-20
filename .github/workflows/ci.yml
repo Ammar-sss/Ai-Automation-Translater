@@ -35,7 +35,7 @@ jobs:
       N8N_SECRET: ci_n8n_secret
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-java@v6
         with:
