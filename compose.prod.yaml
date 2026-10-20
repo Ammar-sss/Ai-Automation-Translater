@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: translatorservice_db
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d translatorservice_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  app:
+    image: ghcr.io/ammar-sss/ai-automation-translater-backend:latest
+    pull_policy: always
+    ports:
+      - "8080:8080"
+    env_file: .env
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/translatorservice_db
+      N8N_WEBHOOK_URL: http://host.docker.internal:5678/webhook/translate
+      SPRING_PROFILES_ACTIVE: prod
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:
