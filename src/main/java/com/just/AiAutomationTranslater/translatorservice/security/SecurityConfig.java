@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint).accessDeniedHandler(customAccessDenialHandler))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_PATHS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/actuator/health/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(msg -> msg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers

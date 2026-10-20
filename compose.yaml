@@ -23,6 +23,7 @@ services:
     environment:
       DB_URL: jdbc:postgresql://postgres:5432/translatorservice_db
       N8N_WEBHOOK_URL: http://host.docker.internal:5678/webhook/translate
+      SPRING_PROFILES_ACTIVE: prod
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
