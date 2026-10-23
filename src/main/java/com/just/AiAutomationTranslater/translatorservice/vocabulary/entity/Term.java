@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(
         name = "terms",
-        uniqueConstraints = @UniqueConstraint(name = "uc_user_term", columnNames = {"user_id", "word_term"})
+        uniqueConstraints = @UniqueConstraint(name = "uc_user_term", columnNames = {"user_id", "term_word"})
 )
 public class Term {
 
@@ -23,7 +23,7 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String termWord;
 
     @Builder.Default
