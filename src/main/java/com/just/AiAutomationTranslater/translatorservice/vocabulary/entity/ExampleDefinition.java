@@ -16,7 +16,7 @@ public class ExampleDefinition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String exampleDefinition;
 
     @ManyToOne(fetch = FetchType.LAZY)
