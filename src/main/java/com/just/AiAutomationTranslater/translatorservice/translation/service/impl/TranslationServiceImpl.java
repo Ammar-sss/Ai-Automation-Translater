@@ -1,6 +1,5 @@
 package com.just.AiAutomationTranslater.translatorservice.translation.service.impl;
 
-import com.just.AiAutomationTranslater.translatorservice.enums.LanguageTarget;
 import com.just.AiAutomationTranslater.translatorservice.res.Response;
 import com.just.AiAutomationTranslater.translatorservice.translation.client.N8nClient;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiRequest;
@@ -26,7 +25,7 @@ public class TranslationServiceImpl implements TranslationService{
 
         AiRequest aiRequest = new AiRequest();
         aiRequest.setTermWord(requestedTerm);
-        aiRequest.setTargetLang(LanguageTarget.AR);
+        aiRequest.setTargetLang(request.getTargetLang());
 
         AiResponse aiResponse = n8nClient.translate(aiRequest);
 
