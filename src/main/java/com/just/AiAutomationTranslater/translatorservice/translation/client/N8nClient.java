@@ -1,17 +1,21 @@
 package com.just.AiAutomationTranslater.translatorservice.translation.client;
 
+import com.just.AiAutomationTranslater.translatorservice.exceptions.TranslationWorkflowException;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiResponse;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.TranslateRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
 
 @Component
+@Slf4j
 public class N8nClient {
 
     private final RestClient restClient;
@@ -35,10 +39,18 @@ public class N8nClient {
     }
 
     public AiResponse translate(TranslateRequest translateRequest) {
-        return restClient.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(translateRequest)
-                .retrieve()
-                .body(AiResponse.class);
+        try {
+            return restClient.post()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(translateRequest)
+                    .retrieve()
+                    .body(AiResponse.class);
+        } catch (HttpServerErrorException e) {
+            log.error("n8n Workflow Execution Error: {}", e.getResponseBodyAsString(), e);
+            throw new TranslationWorkflowException("Translation service failed in n8n workflow: " + e.getResponseBodyAsString());
+        } catch (Exception e) {
+            log.error("Failed to communicate with n8n webhook", e);
+            throw new TranslationWorkflowException("Error communicating with translation workflow service.");
+        }
     }
 }
