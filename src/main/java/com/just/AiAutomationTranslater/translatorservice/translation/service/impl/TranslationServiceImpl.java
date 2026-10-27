@@ -2,7 +2,6 @@ package com.just.AiAutomationTranslater.translatorservice.translation.service.im
 
 import com.just.AiAutomationTranslater.translatorservice.res.Response;
 import com.just.AiAutomationTranslater.translatorservice.translation.client.N8nClient;
-import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiRequest;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiResponse;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.TranslateRequest;
 import com.just.AiAutomationTranslater.translatorservice.translation.service.TranslationService;
@@ -23,9 +22,10 @@ public class TranslationServiceImpl implements TranslationService{
 
         String requestedTerm = request.getTermWord().trim().toLowerCase();
 
-        AiRequest aiRequest = new AiRequest();
+        TranslateRequest aiRequest = new TranslateRequest();
         aiRequest.setTermWord(requestedTerm);
-        aiRequest.setTargetLang(request.getTargetLang());
+        aiRequest.setSourceLanguage(request.getSourceLanguage());
+        aiRequest.setTargetLanguage(request.getTargetLanguage());
 
         AiResponse aiResponse = n8nClient.translate(aiRequest);
 
