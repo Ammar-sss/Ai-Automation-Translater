@@ -16,6 +16,9 @@ public class TranslateRequest {
     @Size(min = 1)
     private String termWord;
 
-    @NotNull(message = "language is required")
-    private LanguageTarget targetLang;
+    @NotNull(message = "source language is required")
+    private LanguageTarget sourceLanguage;
+
+    @NotNull(message = "target language is required")
+    private LanguageTarget targetLanguage;
 }

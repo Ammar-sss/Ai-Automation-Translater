@@ -1,7 +1,7 @@
 package com.just.AiAutomationTranslater.translatorservice.translation.client;
 
-import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiRequest;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiResponse;
+import com.just.AiAutomationTranslater.translatorservice.translation.dto.TranslateRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -34,10 +34,10 @@ public class N8nClient {
                 .build();
     }
 
-    public AiResponse translate(AiRequest aiRequest) {
+    public AiResponse translate(TranslateRequest translateRequest) {
         return restClient.post()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(aiRequest)
+                .body(translateRequest)
                 .retrieve()
                 .body(AiResponse.class);
     }
