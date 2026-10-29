@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,8 @@ public class SpringAiTranslationClient implements TranslationAiClient {
     private Resource promptTemplate;
 
     @Override
+    @Cacheable(cacheNames = "translations",
+            key = "#r.termWord + ':' + #r.sourceLanguage + ':' + #r.targetLanguage")
     public AiResponse translate(TranslateRequest r) {
         try {
             AiResponse response = chatClient.prompt()
