@@ -66,11 +66,23 @@ public class GlobalExceptionsHandler {
         log.warn("Data integrity violation", ex);
         return buildResponseEntity(HttpStatus.CONFLICT, "Data conflicts with an existing record");
     }
-
+/*
     @ExceptionHandler(TranslationWorkflowException.class)
     public ResponseEntity<Response<Void>> handleTranslationWorkflowException(TranslationWorkflowException ex) {
         Response<Void> response = Response.<Void>builder()
                 .statusCode(HttpStatus.BAD_GATEWAY.value()) // 502 Bad Gateway indicates downstream n8n service error
+                .message(ex.getMessage())
+                .data(null)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response);
+    }
+
+ */
+    @ExceptionHandler(TranslationAiException.class)
+    public ResponseEntity<Response<Void>> handleTranslationAiException(TranslationAiException ex) {
+        Response<Void> response = Response.<Void>builder()
+                .statusCode(HttpStatus.BAD_GATEWAY.value())
                 .message(ex.getMessage())
                 .data(null)
                 .build();

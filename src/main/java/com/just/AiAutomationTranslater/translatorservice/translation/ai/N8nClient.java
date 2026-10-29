@@ -1,4 +1,4 @@
-package com.just.AiAutomationTranslater.translatorservice.translation.client;
+/*package com.just.AiAutomationTranslater.translatorservice.translation.AI;
 
 import com.just.AiAutomationTranslater.translatorservice.exceptions.TranslationWorkflowException;
 import com.just.AiAutomationTranslater.translatorservice.translation.dto.AiResponse;
@@ -16,7 +16,7 @@ import java.time.Duration;
 
 @Component
 @Slf4j
-public class N8nClient {
+public class N8nClient{
 
     private final RestClient restClient;
 
@@ -54,3 +54,4 @@ public class N8nClient {
         }
     }
 }
+ */
