@@ -5,10 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -24,6 +31,21 @@ public class GlobalExceptionsHandler {
         );
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Response<Void>> handleAccessDenied(AccessDeniedException ex) {
+        return buildResponseEntity(HttpStatus.FORBIDDEN, "Access denied");
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Response<Void>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
+        return buildResponseEntity(HttpStatus.METHOD_NOT_ALLOWED, "Method not allowed");
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Response<Void>> handleNoResource(NoResourceFoundException ex) {
+        return buildResponseEntity(HttpStatus.NOT_FOUND, "Resource not found");
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response<Void>> handleAllUnknownExceptions(Exception ex) {
 
@@ -37,7 +59,13 @@ public class GlobalExceptionsHandler {
         return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler({
+            HttpMessageNotReadableException.class,
+            IllegalArgumentException.class,
+            HandlerMethodValidationException.class,
+            MethodArgumentTypeMismatchException.class,
+            MissingServletRequestParameterException.class
+    })
     public ResponseEntity<Response<Void>> handleBadRequestException(BadRequestException ex) {
         return buildResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
@@ -49,6 +77,7 @@ public class GlobalExceptionsHandler {
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Response<Void>> handleConflictException(ConflictException ex) {
+        log.debug("Bad request: {}", ex.getMessage());
         return buildResponseEntity(HttpStatus.CONFLICT, ex.getMessage());
     }
 

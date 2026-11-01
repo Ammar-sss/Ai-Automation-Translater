@@ -1,5 +1,6 @@
 package com.just.AiAutomationTranslater.translatorservice.auth_user.service.impl;
 
+import com.just.AiAutomationTranslater.translatorservice.auth_user.dto.UpdateUserProfile;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.dto.UserDTO;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.entity.User;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.repository.UserRepository;
@@ -94,11 +95,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Response<UserDTO> updateProfile(UserDTO userDTO) {
+    public Response<UserDTO> updateProfile(UpdateUserProfile updateUserProfile) {
         User user = getCurrentUser();
 
-        if(!userDTO.getUsername().isBlank()) {
-            user.setUsername(userDTO.getUsername());
+        if(!updateUserProfile.getUsername().isBlank()) {
+            user.setUsername(updateUserProfile.getUsername());
         }
 
         userRepository.save(user);
