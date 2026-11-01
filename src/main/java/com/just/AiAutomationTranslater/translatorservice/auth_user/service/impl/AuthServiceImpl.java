@@ -111,6 +111,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(normalizedEmail)
                 .orElseThrow(() ->  new UnauthorizedAccessException("Invalid email or password"));
 
+        if(!user.isEnabled()){
+            throw new UnauthorizedAccessException("Your account is disabled");
+        }
+
         // Check if account is locked
         if (user.getLockUntil() != null && user.getLockUntil().isAfter(now)) {
             throw new UnauthorizedAccessException("Invalid email or password");
