@@ -1,5 +1,6 @@
 package com.just.AiAutomationTranslater.translatorservice.auth_user.controller;
 
+import com.just.AiAutomationTranslater.translatorservice.auth_user.dto.UpdateUserProfile;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.dto.UserDTO;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.service.UserService;
 import com.just.AiAutomationTranslater.translatorservice.res.Response;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<Response<UserDTO>> updateProfile(@Valid @RequestBody UserDTO userDTO){
-        return ResponseEntity.ok(userService.updateProfile(userDTO));
+    public ResponseEntity<Response<UserDTO>> updateProfile(@Valid @RequestBody UpdateUserProfile updateUserProfile){
+        return ResponseEntity.ok(userService.updateProfile(updateUserProfile));
     }
 }

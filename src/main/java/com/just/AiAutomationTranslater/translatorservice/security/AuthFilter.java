@@ -2,6 +2,7 @@ package com.just.AiAutomationTranslater.translatorservice.security;
 
 
 import com.just.AiAutomationTranslater.translatorservice.exceptions.CustomAuthenticationEntryPoint;
+import com.just.AiAutomationTranslater.translatorservice.res.Response;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -11,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +24,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,6 +37,7 @@ public class AuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final CustomUserServiceDetails customUserServiceDetails;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -62,6 +67,11 @@ public class AuthFilter extends OncePerRequestFilter {
                 customAuthenticationEntryPoint.commence(
                         request, response, new BadCredentialsException("Invalid or expired token"));
                 return;
+            } catch (DataAccessException ex) {
+                log.error("Database unavailable while authenticating request", ex);
+                SecurityContextHolder.clearContext();
+                writeServiceUnavailable(response);
+                return;
             }
         }
 
@@ -81,5 +91,17 @@ public class AuthFilter extends OncePerRequestFilter {
             return tokenWithBearer.substring(7);
         }
         return null;
+    }
+
+    private void writeServiceUnavailable(HttpServletResponse response) throws IOException {
+        Response<Void> body = Response.<Void>builder()
+                .statusCode(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message("Service temporarily unavailable. Please retry.")
+                .build();
+
+        response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+        response.setHeader("Retry-After", "5");
+        response.setContentType("application/json");
+        response.getWriter().write(objectMapper.writeValueAsString(body));
     }
 }

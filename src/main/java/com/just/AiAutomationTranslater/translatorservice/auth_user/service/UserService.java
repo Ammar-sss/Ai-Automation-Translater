@@ -1,5 +1,6 @@
 package com.just.AiAutomationTranslater.translatorservice.auth_user.service;
 
+import com.just.AiAutomationTranslater.translatorservice.auth_user.dto.UpdateUserProfile;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.dto.UserDTO;
 import com.just.AiAutomationTranslater.translatorservice.auth_user.entity.User;
 import com.just.AiAutomationTranslater.translatorservice.res.Response;
@@ -13,7 +14,7 @@ public interface UserService {
     Response<List<UserDTO>> getAllUsers();
     Response<UserDTO> getUserById(long id);
     Response<UserDTO> getUserByEmail(String email);
-    Response<UserDTO> updateProfile(UserDTO userDTO);
+    Response<UserDTO> updateProfile(UpdateUserProfile updateUserProfile);
     Response<Void> deleteUserByID(long id);
     Response<Void> deleteUserByEmail(String email);
     Response<Void> deActivateUserByID(long id);
